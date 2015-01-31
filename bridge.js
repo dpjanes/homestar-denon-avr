@@ -29,6 +29,8 @@ var iotdb = require('iotdb')
 var _ = iotdb.helpers;
 var net = require('net');
 
+var mdns = require('mdns');
+
 var bunyan = require('bunyan');
 var logger = bunyan.createLogger({
     name: 'iotdb',
@@ -56,6 +58,7 @@ var DenonAVRBridge = function(native) {
         retry: 15,
         port: 23,
         host: null,
+        mdns: true,
         client: null,
     });
 };
@@ -76,6 +79,24 @@ DenonAVRBridge.prototype.discover = function() {
     
     if (self.native.host) {
         self._discover_host(self.native);
+    } else if (self.native.mdns) {
+        var browser = mdns.createBrowser(mdns.tcp('http'));
+        browser.on('serviceUp', function(service) {
+            if (service.port !== 80) {
+                return;
+            } else if (!service.addresses) {
+                return;
+            } else if (service.addresses.length === 0) {
+                return;
+            }
+
+            self._discover_host(_.defaults({
+                host: service.addresses[0],
+                name: service.name,
+                probe: true,
+            }, self.native));
+        });
+        browser.start();
     }
 };
 
@@ -87,6 +108,37 @@ DenonAVRBridge.prototype._discover_host = function(discoverd) {
     var self = this;
     var client = null;
     var is_discovered = false;
+    var is_probed_and_discarded = false;
+    var interval = null;
+
+    var _destroy = function() {
+        if (client) {
+            client.removeListener('data', _on_data);
+            client.removeListener('end', _on_end);
+            client.removeListener('error', _on_error);
+            client.destroy();
+        }
+
+        client = null;
+        is_discovered = false;
+    };
+
+    var _not_a_denon = function() {
+        logger.info({
+            method: "_discover_host/_not_a_denon",
+            unique_id: self.unique_id,
+            host: discoverd.host,
+            port: discoverd.port,
+        }, "not a Denon");
+
+        is_probed_and_discarded = true;
+        _destroy();
+
+        if (interval) {
+            clearInterval(interval);
+            interval = null;
+        }
+    };
 
     var _on_connect = function() {
         logger.info({
@@ -108,8 +160,12 @@ DenonAVRBridge.prototype._discover_host = function(discoverd) {
             error: error,
         }, "error");
 
-        client = null;
-        is_discovered = false;
+        if (discoverd.probe && !is_discovered) {
+            _not_a_denon();
+        }
+
+        _destroy();
+
     };
 
     var _on_data = function(data) {
@@ -119,11 +175,14 @@ DenonAVRBridge.prototype._discover_host = function(discoverd) {
 
         var data$ = data.toString();
         if (data$.indexOf('MV') === -1) {
+            if (discoverd.probe) {
+                _not_a_denon();
+            }
             return;
         }
 
         logger.info({
-            method: "_discover_host",
+            method: "_discover_host/_on_data",
             unique_id: self.unique_id,
             host: discoverd.host,
             port: discoverd.port,
@@ -163,12 +222,7 @@ DenonAVRBridge.prototype._discover_host = function(discoverd) {
                 port: discoverd.port,
             }, "throwing away a client that didn't return MV and will try again");
 
-            client.removeListener('end', _on_end);
-            client.removeListener('error', _on_error);
-            client.destroy();
-
-            client = null;
-            is_discovered = false;
+            self._destroy();
         }
 
         logger.info({
@@ -185,7 +239,7 @@ DenonAVRBridge.prototype._discover_host = function(discoverd) {
     };
 
     if (self.native.retry > 0) {
-        setInterval(function() {
+        interval = setInterval(function() {
             _discover();
         }, self.native.retry * 1000);
     }
