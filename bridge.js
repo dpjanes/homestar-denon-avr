@@ -190,7 +190,7 @@ DenonAVRBridge.prototype._discover_host = function(discoverd) {
 
         var initd = _.smart_extend({
             client: client,
-        }, self.native);
+        }, discoverd);
         var bridge = new DenonAVRBridge(initd);
 
         self.discovered(bridge);
@@ -321,6 +321,8 @@ DenonAVRBridge.prototype.pull = function() {
  *  There <b>must</b> be something in the dictionary!
  */
 DenonAVRBridge.prototype.identity = function() {
+    var self = this;
+
     return {
         name: self.native.name,
     };
@@ -338,9 +340,11 @@ DenonAVRBridge.prototype.identity = function() {
  *  <li><code>schema:model</code>
  */
 DenonAVRBridge.prototype.meta = function() {
+    var self = this;
+
     return {
         "iot:name": self.native.name || "DenonAVR",
-        "iot:number": 1,
+        "schema:manufacturer": "http://www.denon.com/",
     };
 };
 

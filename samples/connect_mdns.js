@@ -8,7 +8,7 @@ var denon = new DenonAVRBridge({
     mdns: true,
 });
 denon.discovered = function(bridge) {
-    console.log("got 'en");
+    console.log("got 'en", bridge.meta());
     bridge.connect();
     bridge.push({
         volume: 50,
