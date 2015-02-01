@@ -398,22 +398,22 @@ DenonAVRBridge.prototype.push = function(pushd) {
 
         var volume = Math.min(Math.max(0, Math.round(pushd.volume * self.max_volume)), self.max_volume);
         if (volume < 10) {
-            self.native.client.write("MV0" + volume + "\r");
+            self.native.client.write("\rMV0" + volume + "\r");
         } else {
-            self.native.client.write("MV" + volume + "\r");
+            self.native.client.write("\rMV" + volume + "\r");
         }
     }
 
     if (pushd.band !== undefined) {
         pushd.on = true;
-        self.native.client.write("SI" + pushd.band.toUpperCase() + "\r");
+        self.native.client.write("\rSI" + pushd.band.toUpperCase() + "\r");
     }
 
     if (pushd.on !== undefined) {
         if (pushd.on) {
-            self.native.client.write("PWON\r");
+            self.native.client.write("\rPWON\r");
         } else {
-            self.native.client.write("PWSTANDBY\r");
+            self.native.client.write("\rPWSTANDBY\r");
         }
     }
 

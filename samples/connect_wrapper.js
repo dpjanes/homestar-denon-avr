@@ -11,6 +11,10 @@ wrapper = iotdb.bridge_wrapper(new DenonAVRBridge({
 }));
 wrapper.on('discovered', function(bridge) {
     console.log("+ discovered\n ", bridge.meta());
+    bridge.push({
+        volume: 0.2,
+        band: "DVD",
+    });
 })
 wrapper.on('state', function(bridge, state) {
     console.log("+ state", state);
