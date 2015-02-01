@@ -8,7 +8,10 @@ var denon = new DenonAVRBridge({
     host: "192.168.0.19", 
 });
 denon.discovered = function(bridge) {
-    console.log("got 'en");
+    console.log("+ got one", bridge.meta());
+    bridge.pulled = function(state) {
+        console.log("+ state-change", state);
+    };
     bridge.connect();
     bridge.push({
         volume: 50,

@@ -5,9 +5,6 @@
  *  IOTDB.org
  *  2015-01-31
  *
- *  This is a an example of a Bridge, which is a massively 
- *  simplified way of writing drivers
- *
  *  Copyright [2013-2015] [David P. Janes]
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,6 +58,8 @@ var DenonAVRBridge = function(native) {
         mdns: true,
         client: null,
     });
+    self.stated = {};
+    self.max_volume = 98;
 };
 
 /* --- lifecycle --- */
@@ -257,13 +256,118 @@ DenonAVRBridge.prototype.connect = function() {
         return;
     }
 
-    self.pull();
+    self._setup_events();
+    self._setup_polling();
 
-    if (self.native.poll) {
-        setInterval(function() {
-            self.pull();
-        }, self.native.poll * 1000);
+    self.pull();
+};
+
+DenonAVRBridge.prototype._setup_events = function() {
+    var self = this;
+
+    var _on_data = function(data) {
+        var parts = data.toString().split('\r');
+        for (var pi in parts) {
+            self._received(parts[pi]);
+        }
+    };
+
+    var _on_error = function(error) {
+        _disconnected();
+
+        logger.info({
+            method: "connect/_on_error",
+            unique_id: self.unique_id,
+            host: self.native.host,
+            port: self.native.port,
+            error: error,
+        }, "called");
+    };
+
+    var _on_end = function() {
+        _disconnected();
+
+        logger.info({
+            method: "connect/_on_end",
+            unique_id: self.unique_id,
+            host: self.native.host,
+            port: self.native.port,
+        }, "called");
+    };
+
+    var _disconnected = function() {
+        if (!self.native.client) {
+            return;
+        }
+
+        self.native.client.removeListener('data', self._on_data);
+        self.native.client.removeListener('end', self._on_end);
+        self.native.client.removeListener('error', self._on_error);
+        self.native.client = null;
+
+        // disconnection is a metadata change
+        self.pulled();
+    };
+
+    self.native.client.on('data', _on_data);
+    self.native.client.on('end', _on_end);
+    self.native.client.on('error', _on_error);
+
+};
+
+DenonAVRBridge.prototype._setup_polling = function() {
+    var self = this;
+    if (!self.native.poll) {
+        return;
     }
+
+    setInterval(function() {
+        self.pull();
+    }, self.native.poll * 1000);
+};
+
+DenonAVRBridge.prototype._received = function(message) {
+    var self = this;
+    if (!message.length) {
+        return;
+    }
+
+    message = message.replace(/^(SI|PW|DC|SV|MV(?=\d))/, "$1 ");
+    var parts = message.split(" ", 2);
+    var key = parts[0];
+    var value = parts[1];
+
+    if (key === "SI") {
+        key = "band-value";
+    } else if (key == "MV") {
+        key = "volume-value";
+        value = parseInt(value);
+        if (value >= 100) {
+            value = value / 10;
+        }
+        value = value / self.max_volume;
+        value = Math.round(value * 1000);
+        value = value / 1000.0;
+    } else if (key == "PW") {
+        key = "on-value";
+        if (value === "ON") {
+            value = true;
+        } else {
+            value = false;
+        }
+    } else if (key == "MVMAX") {
+        self.max_volume = parseInt(value);
+        return;
+    } else {
+        return;
+    }
+
+    if (self.stated[key] === value) {
+        return;
+    }
+
+    self.stated[key] = value;
+    self.pulled(self.stated);
 };
 
 /**
@@ -289,6 +393,37 @@ DenonAVRBridge.prototype.push = function(pushd) {
         return;
     }
 
+    if (pushd.volume !== undefined) {
+        pushd.on = true;
+
+        var volume = Math.min(Math.max(0, Math.round(pushd.volume * self.max_volume)), self.max_volume);
+        if (volume < 10) {
+            self.native.client.write("MV0" + volume + "\r");
+        } else {
+            self.native.client.write("MV" + volume + "\r");
+        }
+    }
+
+    if (pushd.band !== undefined) {
+        pushd.on = true;
+        self.native.client.write("SI" + pushd.band.toUpperCase() + "\r");
+    }
+
+    if (pushd.on !== undefined) {
+        if (pushd.on) {
+            self.native.client.write("PWON\r");
+        } else {
+            self.native.client.write("PWSTANDBY\r");
+        }
+    }
+
+    logger.info({
+        method: "push",
+        unique_id: self.unique_id,
+        host: self.native.host,
+        port: self.native.port,
+        pushd: pushd,
+    }, "pushed");
 };
 
 /**
@@ -308,6 +443,8 @@ DenonAVRBridge.prototype.pull = function() {
         host: self.native.host,
         port: self.native.port,
     }, "polling Denon AVR for current state");
+
+    self.native.client.write("MV?\rSI?\rPW?\rMU?\n");
 };
 
 /* --- state --- */
@@ -375,14 +512,6 @@ DenonAVRBridge.prototype.discovered = function(bridge) {
 
 DenonAVRBridge.prototype.pulled = function(pulld) {
     throw new Error("DenonAVRBridge.pulled not implemented");
-};
-
-DenonAVRBridge.prototype.connected = function() {
-    throw new Error("DenonAVRBridge.connected not implemented");
-};
-
-DenonAVRBridge.prototype.disconnected = function() {
-    throw new Error("DenonAVRBridge.disconnected not implemented");
 };
 
 /*
