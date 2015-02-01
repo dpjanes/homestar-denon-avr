@@ -68,6 +68,6 @@ This an an IOTDB "Bridge" which provides a standardized
 way of managing and talking to Things. N.B. These can be
 used in your project without too much of IOTDB seeping in.
 
-See <a href="samples/connect_wrapper">samples/connect\_wrapper</a>
+See <a href="samples/connect_wrapper.js">samples/connect\_wrapper</a>
 for how to do this.
 
