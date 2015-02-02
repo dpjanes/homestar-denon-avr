@@ -2,7 +2,7 @@
  *  Connect to a Denon AVR by searching MDNS/Bonjour
  */
 
-var DenonAVRBridge = require('../bridge').Bridge;
+var DenonAVRBridge = require('../DenonAVRBridge').Bridge;
 
 var denon = new DenonAVRBridge({
     mdns: true,
@@ -14,7 +14,7 @@ denon.discovered = function(bridge) {
     };
     bridge.connect();
     bridge.push({
-        volume: 50,
+        volume: .5,
     });
 };
 denon.discover();

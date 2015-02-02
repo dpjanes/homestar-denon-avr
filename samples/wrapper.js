@@ -1,10 +1,10 @@
 /*
- *  Connect to a Denon AVR at a named host
+ *  Use a "bridge_wrapper", which handles all injections
  */
 
 var iotdb = require("iotdb");
 
-var DenonAVRBridge = require('../bridge').Bridge;
+var DenonAVRBridge = require('../DenonAVRBridge').Bridge;
 
 wrapper = iotdb.bridge_wrapper(new DenonAVRBridge({
     mdns: true

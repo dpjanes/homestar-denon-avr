@@ -46,18 +46,18 @@ var logger = bunyan.createLogger({
  *  <li><code>disconnnected</code> - this has been disconnected from a Thing
  *  </ul>
  */
-var DenonAVRBridge = function(native) {
+var DenonAVRBridge = function(paramd, native) {
     var self = this;
 
-    self.native = _.defaults(native, {
+    self.paramd = _.defaults(paramd, {
         name: "Denon AVR",
         poll: 30,
         retry: 15,
         port: 23,
         host: null,
         mdns: true,
-        client: null,
     });
+    self.native = native;
     self.stated = {};
     self.max_volume = 98;
 };
@@ -69,16 +69,16 @@ var DenonAVRBridge = function(native) {
  *  Discover one or more Things.
  *  <ul>
  *  <li>look for Things (using <code>self.bridge</code> data to initialize)
- *  <li>find / create a <code>native</code> that does the talking
- *  <li>create an DenonAVRBridge(native)
+ *  <li>find / create a <code>paramd</code> that does the talking
+ *  <li>create an DenonAVRBridge(paramd)
  *  <li>call <code>self.discovered(bridge)</code> with it
  */
 DenonAVRBridge.prototype.discover = function() {
     var self = this;
     
-    if (self.native.host) {
-        self._discover_host(self.native);
-    } else if (self.native.mdns) {
+    if (self.paramd.host) {
+        self._discover_host(self.paramd);
+    } else if (self.paramd.mdns) {
         var browser = mdns.createBrowser(mdns.tcp('http'));
         browser.on('serviceUp', function(service) {
             if (service.port !== 80) {
@@ -93,7 +93,7 @@ DenonAVRBridge.prototype.discover = function() {
                 host: service.addresses[0],
                 name: service.name,
                 probe: true,
-            }, self.native));
+            }, self.paramd));
         });
         browser.start();
     }
@@ -187,10 +187,7 @@ DenonAVRBridge.prototype._discover_host = function(discoverd) {
             port: discoverd.port,
         }, "checks out - will use this device");
 
-        var initd = _.smart_extend({
-            client: client,
-        }, discoverd);
-        var bridge = new DenonAVRBridge(initd);
+        var bridge = new DenonAVRBridge(discoverd, client);
 
         self.discovered(bridge);
         is_discovered = true;
@@ -237,10 +234,10 @@ DenonAVRBridge.prototype._discover_host = function(discoverd) {
         client.on('end', _on_end);
     };
 
-    if (self.native.retry > 0) {
+    if (self.paramd.retry > 0) {
         interval = setInterval(function() {
             _discover();
-        }, self.native.retry * 1000);
+        }, self.paramd.retry * 1000);
     }
 
     _discover();
@@ -248,11 +245,11 @@ DenonAVRBridge.prototype._discover_host = function(discoverd) {
 
 /**
  *  INSTANCE
- *  This is called when the Bridge is no longer needed. When
+ *  Call when ready to be used as an instance
  */
 DenonAVRBridge.prototype.connect = function() {
     var self = this;
-    if (!self.native.client) {
+    if (!self.native) {
         return;
     }
 
@@ -278,8 +275,8 @@ DenonAVRBridge.prototype._setup_events = function() {
         logger.info({
             method: "connect/_on_error",
             unique_id: self.unique_id,
-            host: self.native.host,
-            port: self.native.port,
+            host: self.paramd.host,
+            port: self.paramd.port,
             error: error,
         }, "called");
     };
@@ -290,40 +287,40 @@ DenonAVRBridge.prototype._setup_events = function() {
         logger.info({
             method: "connect/_on_end",
             unique_id: self.unique_id,
-            host: self.native.host,
-            port: self.native.port,
+            host: self.paramd.host,
+            port: self.paramd.port,
         }, "called");
     };
 
     var _disconnected = function() {
-        if (!self.native.client) {
+        if (!self.native) {
             return;
         }
 
-        self.native.client.removeListener('data', self._on_data);
-        self.native.client.removeListener('end', self._on_end);
-        self.native.client.removeListener('error', self._on_error);
-        self.native.client = null;
+        self.native.removeListener('data', self._on_data);
+        self.native.removeListener('end', self._on_end);
+        self.native.removeListener('error', self._on_error);
+        self.native = null;
 
         // disconnection is a metadata change
         self.pulled();
     };
 
-    self.native.client.on('data', _on_data);
-    self.native.client.on('end', _on_end);
-    self.native.client.on('error', _on_error);
+    self.native.on('data', _on_data);
+    self.native.on('end', _on_end);
+    self.native.on('error', _on_error);
 
 };
 
 DenonAVRBridge.prototype._setup_polling = function() {
     var self = this;
-    if (!self.native.poll) {
+    if (!self.paramd.poll) {
         return;
     }
 
     setInterval(function() {
         self.pull();
-    }, self.native.poll * 1000);
+    }, self.paramd.poll * 1000);
 };
 
 DenonAVRBridge.prototype._received = function(message) {
@@ -376,7 +373,7 @@ DenonAVRBridge.prototype._received = function(message) {
  */
 DenonAVRBridge.prototype.disconnect = function() {
     var self = this;
-    if (!self.native || !self.native.client) {
+    if (!self.paramd || !self.native) {
         return;
     }
 };
@@ -389,7 +386,7 @@ DenonAVRBridge.prototype.disconnect = function() {
  */
 DenonAVRBridge.prototype.push = function(pushd) {
     var self = this;
-    if (!self.native.client) {
+    if (!self.native) {
         return;
     }
 
@@ -398,30 +395,30 @@ DenonAVRBridge.prototype.push = function(pushd) {
 
         var volume = Math.min(Math.max(0, Math.round(pushd.volume * self.max_volume)), self.max_volume);
         if (volume < 10) {
-            self.native.client.write("\rMV0" + volume + "\r");
+            self.native.write("\rMV0" + volume + "\r");
         } else {
-            self.native.client.write("\rMV" + volume + "\r");
+            self.native.write("\rMV" + volume + "\r");
         }
     }
 
     if (pushd.band !== undefined) {
         pushd.on = true;
-        self.native.client.write("\rSI" + pushd.band.toUpperCase() + "\r");
+        self.native.write("\rSI" + pushd.band.toUpperCase() + "\r");
     }
 
     if (pushd.on !== undefined) {
         if (pushd.on) {
-            self.native.client.write("\rPWON\r");
+            self.native.write("\rPWON\r");
         } else {
-            self.native.client.write("\rPWSTANDBY\r");
+            self.native.write("\rPWSTANDBY\r");
         }
     }
 
     logger.info({
         method: "push",
         unique_id: self.unique_id,
-        host: self.native.host,
-        port: self.native.port,
+        host: self.paramd.host,
+        port: self.paramd.port,
         pushd: pushd,
     }, "pushed");
 };
@@ -433,18 +430,18 @@ DenonAVRBridge.prototype.push = function(pushd) {
  */
 DenonAVRBridge.prototype.pull = function() {
     var self = this;
-    if (!self.native.client) {
+    if (!self.native) {
         return;
     }
 
     logger.info({
         method: "pull",
         unique_id: self.unique_id,
-        host: self.native.host,
-        port: self.native.port,
+        host: self.paramd.host,
+        port: self.paramd.port,
     }, "polling Denon AVR for current state");
 
-    self.native.client.write("MV?\rSI?\rPW?\rMU?\n");
+    self.native.write("MV?\rSI?\rPW?\rMU?\n");
 };
 
 /* --- state --- */
@@ -453,7 +450,7 @@ DenonAVRBridge.prototype.pull = function() {
  *  INSTANCE.
  *  Return the identify of this thing: basically
  *  a dictionary of what uniquely identifies this,
- *  based <code>self.native</code>.
+ *  based <code>self.paramd</code>.
  *  <p>
  *  There <b>must</b> be something in the dictionary!
  */
@@ -461,7 +458,7 @@ DenonAVRBridge.prototype.identity = function() {
     var self = this;
 
     return {
-        name: self.native.name,
+        name: self.paramd.name,
     };
 };
 
@@ -480,7 +477,7 @@ DenonAVRBridge.prototype.meta = function() {
     var self = this;
 
     return {
-        "iot:name": self.native.name || "DenonAVR",
+        "iot:name": self.paramd.name || "DenonAVR",
         "schema:manufacturer": "http://www.denon.com/",
     };
 };
@@ -492,7 +489,7 @@ DenonAVRBridge.prototype.meta = function() {
  *  shutdown states, they will be always checked first.
  */
 DenonAVRBridge.prototype.reachable = function() {
-    return this.native.client !== null;
+    return this.native !== null;
 };
 
 /**
