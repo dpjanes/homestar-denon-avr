@@ -318,7 +318,12 @@ DenonAVRBridge.prototype._setup_polling = function() {
         return;
     }
 
-    setInterval(function() {
+    var timer = setInterval(function() {
+        if (!self.native) {
+            clearInterval(timer);
+            return;
+        }
+
         self.pull();
     }, self.paramd.poll * 1000);
 };
@@ -376,6 +381,9 @@ DenonAVRBridge.prototype.disconnect = function() {
     if (!self.paramd || !self.native) {
         return;
     }
+
+    self.native = null;
+    self.pulled();
 };
 
 /* --- data --- */
@@ -477,6 +485,7 @@ DenonAVRBridge.prototype.meta = function() {
     var self = this;
 
     return {
+        "iot:thing": _.id.thing_urn.network_unique("DenonAVR", self.paramd.name || "DenonAVR"),
         "iot:name": self.paramd.name || "DenonAVR",
         "schema:manufacturer": "http://www.denon.com/",
     };
