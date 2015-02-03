@@ -456,26 +456,12 @@ DenonAVRBridge.prototype.pull = function() {
 
 /**
  *  INSTANCE.
- *  Return the identify of this thing: basically
- *  a dictionary of what uniquely identifies this,
- *  based <code>self.paramd</code>.
- *  <p>
- *  There <b>must</b> be something in the dictionary!
- */
-DenonAVRBridge.prototype.identity = function() {
-    var self = this;
-
-    return {
-        name: self.paramd.name,
-    };
-};
-
-/**
- *  INSTANCE.
  *  Return the metadata - compact form can be used.
  *  <p>
  *  Really really useful things are:
  *  <ul>
+ *  <li><code>iot:thing</code> required - a unique ID
+ *  <li><code>iot:device</code> suggested if linking multiple things together
  *  <li><code>iot:name</code>
  *  <li><code>iot:number</code>
  *  <li><code>schema:manufacturer</code>
