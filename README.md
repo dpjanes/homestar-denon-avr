@@ -1,5 +1,8 @@
-# iotdb-bridge-denon-avr
-Denon AVR Bridge for IOTDB
+# homestar-denon-avr
+
+Connect and control Denon AVR(s) with HomeStar and IOTDB.
+
+See <a href="samples/">the samples</a> for details how to add to your project.
 
 ## About
 
@@ -61,13 +64,4 @@ standardized value like <code>iot-attribute:band.phono</code>, etc..
 * IPD
 * IRP
 * FVP
-
-## About Bridges
-
-This an an IOTDB "Bridge" which provides a standardized
-way of managing and talking to Things. N.B. These can be
-used in your project without too much of IOTDB seeping in.
-
-See <a href="samples/connect_wrapper.js">samples/connect\_wrapper</a>
-for how to do this.
 
