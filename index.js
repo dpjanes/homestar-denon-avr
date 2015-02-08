@@ -28,9 +28,10 @@ var _ = iotdb.helpers;
 var bridge = require('./DenonAVRBridge').Bridge;
 var model = require('./DenonAVRModel').Model;
 
-exports.models = [
-    model
+exports.bindings = [
+    {
+        name: "DenonAVR",
+        bridge: bridge,
+        model: model,
+    }
 ];
-exports.model_bridge = {
-    "DenonAVR": bridge,
-};

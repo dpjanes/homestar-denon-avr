@@ -46,10 +46,10 @@ var logger = bunyan.createLogger({
  *  <li><code>disconnnected</code> - this has been disconnected from a Thing
  *  </ul>
  */
-var DenonAVRBridge = function(paramd, native) {
+var DenonAVRBridge = function(initd, native) {
     var self = this;
 
-    self.paramd = _.defaults(paramd, {
+    self.initd = _.defaults(initd, {
         name: "Denon AVR",
         poll: 30,
         retry: 15,
@@ -76,9 +76,9 @@ var DenonAVRBridge = function(paramd, native) {
 DenonAVRBridge.prototype.discover = function() {
     var self = this;
     
-    if (self.paramd.host) {
-        self._discover_host(self.paramd);
-    } else if (self.paramd.mdns) {
+    if (self.initd.host) {
+        self._discover_host(self.initd);
+    } else if (self.initd.mdns) {
         var browser = mdns.createBrowser(mdns.tcp('http'));
         browser.on('serviceUp', function(service) {
             if (service.port !== 80) {
@@ -93,7 +93,7 @@ DenonAVRBridge.prototype.discover = function() {
                 host: service.addresses[0],
                 name: service.name,
                 probe: true,
-            }, self.paramd));
+            }, self.initd));
         });
         browser.start();
     }
@@ -234,10 +234,10 @@ DenonAVRBridge.prototype._discover_host = function(discoverd) {
         client.on('end', _on_end);
     };
 
-    if (self.paramd.retry > 0) {
+    if (self.initd.retry > 0) {
         interval = setInterval(function() {
             _discover();
-        }, self.paramd.retry * 1000);
+        }, self.initd.retry * 1000);
     }
 
     _discover();
@@ -275,8 +275,8 @@ DenonAVRBridge.prototype._setup_events = function() {
         logger.info({
             method: "connect/_on_error",
             unique_id: self.unique_id,
-            host: self.paramd.host,
-            port: self.paramd.port,
+            host: self.initd.host,
+            port: self.initd.port,
             error: error,
         }, "called");
     };
@@ -287,8 +287,8 @@ DenonAVRBridge.prototype._setup_events = function() {
         logger.info({
             method: "connect/_on_end",
             unique_id: self.unique_id,
-            host: self.paramd.host,
-            port: self.paramd.port,
+            host: self.initd.host,
+            port: self.initd.port,
         }, "called");
     };
 
@@ -314,7 +314,7 @@ DenonAVRBridge.prototype._setup_events = function() {
 
 DenonAVRBridge.prototype._setup_polling = function() {
     var self = this;
-    if (!self.paramd.poll) {
+    if (!self.initd.poll) {
         return;
     }
 
@@ -325,7 +325,7 @@ DenonAVRBridge.prototype._setup_polling = function() {
         }
 
         self.pull();
-    }, self.paramd.poll * 1000);
+    }, self.initd.poll * 1000);
 };
 
 DenonAVRBridge.prototype._received = function(message) {
@@ -378,7 +378,7 @@ DenonAVRBridge.prototype._received = function(message) {
  */
 DenonAVRBridge.prototype.disconnect = function() {
     var self = this;
-    if (!self.paramd || !self.native) {
+    if (!self.initd || !self.native) {
         return;
     }
 
@@ -425,8 +425,8 @@ DenonAVRBridge.prototype.push = function(pushd) {
     logger.info({
         method: "push",
         unique_id: self.unique_id,
-        host: self.paramd.host,
-        port: self.paramd.port,
+        host: self.initd.host,
+        port: self.initd.port,
         pushd: pushd,
     }, "pushed");
 };
@@ -445,8 +445,8 @@ DenonAVRBridge.prototype.pull = function() {
     logger.info({
         method: "pull",
         unique_id: self.unique_id,
-        host: self.paramd.host,
-        port: self.paramd.port,
+        host: self.initd.host,
+        port: self.initd.port,
     }, "polling Denon AVR for current state");
 
     self.native.write("MV?\rSI?\rPW?\rMU?\n");
@@ -471,8 +471,8 @@ DenonAVRBridge.prototype.meta = function() {
     var self = this;
 
     return {
-        "iot:thing": _.id.thing_urn.network_unique("DenonAVR", self.paramd.name || "DenonAVR"),
-        "iot:name": self.paramd.name || "DenonAVR",
+        "iot:thing": _.id.thing_urn.network_unique("DenonAVR", self.initd.name || "DenonAVR"),
+        "iot:name": self.initd.name || "DenonAVR",
         "schema:manufacturer": "http://www.denon.com/",
     };
 };
