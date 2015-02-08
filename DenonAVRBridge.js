@@ -247,7 +247,7 @@ DenonAVRBridge.prototype._discover_host = function(discoverd) {
  *  INSTANCE
  *  Call when ready to be used as an instance
  */
-DenonAVRBridge.prototype.connect = function() {
+DenonAVRBridge.prototype.connect = function(connectd) {
     var self = this;
     if (!self.native) {
         return;
