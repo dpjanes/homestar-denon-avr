@@ -1,5 +1,5 @@
 /*
- *  DenonAVR.js
+ *  DenonAVRModel.js
  *
  *  David Janes
  *  IOTDB
@@ -16,3 +16,8 @@ exports.Model = iotdb.make_model('DenonAVR')
     .io("band", "band-value", iotdb.string.band)
     .make()
     ;
+
+exports.Binding = {
+    bridge: require('./DenonAVRBridge').Bridge,
+    model: exports.Model,
+};

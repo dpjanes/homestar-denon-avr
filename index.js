@@ -25,12 +25,11 @@
 var iotdb = require('iotdb')
 var _ = iotdb.helpers;
 
-var bridge = require('./DenonAVRBridge').Bridge;
-var model = require('./DenonAVRModel').Model;
+var DenonAVRModel = require('./DenonAVRModel');
 
-exports.bindings = [
-    {
-        bridge: bridge,
-        model: model,
-    }
+exports.Models = [
+    DenonAVRModel.Model,
+];
+exports.Bindings = [
+    DenonAVRModel.Binding,
 ];

@@ -9,7 +9,7 @@ var DenonAVRBridge = require('../DenonAVRBridge').Bridge;
 wrapper = iotdb.bridge_wrapper(new DenonAVRBridge({
     mdns: true
 }));
-wrapper.on('discovered', function(bridge) {
+wrapper.on('instance', function(bridge) {
     console.log("+ discovered\n ", bridge.meta());
     bridge.push({
         volume: 0.2,
