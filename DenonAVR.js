@@ -1,5 +1,5 @@
 /*
- *  DenonAVRModel.js
+ *  DenonAVR.js
  *
  *  David Janes
  *  IOTDB

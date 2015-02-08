@@ -4,10 +4,9 @@
 
 var iotdb = require("iotdb");
 
-var DenonAVRBridge = require('../DenonAVRBridge').Bridge;
-var DenonAVRModel = require('../DenonAVRModel').Model;
+var DenonAVR = require('../DenonAVR');
 
-wrapper = iotdb.bridge_wrapper(DenonAVRModel.Binding, { mdns: true })
+wrapper = iotdb.bridge_wrapper(DenonAVR.Binding, { mdns: true });
 wrapper.on('model', function(model) {
     model.on_change(function(model) {
         console.log("+ state\n ", model.state());
