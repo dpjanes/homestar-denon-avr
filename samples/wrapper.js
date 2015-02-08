@@ -6,7 +6,7 @@ var iotdb = require("iotdb");
 
 var DenonAVR = require('../DenonAVR');
 
-wrapper = iotdb.bridge_wrapper(DenonAVR.Binding, { mdns: true });
+wrapper = iotdb.bridge_wrapper(DenonAVR.binding, { mdns: true });
 wrapper.on('bridge', function(bridge) {
     console.log("+ discovered\n ", bridge.meta());
     bridge.push({

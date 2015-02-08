@@ -27,6 +27,6 @@ var _ = iotdb.helpers;
 
 var DenonAVR = require('./DenonAVR');
 
-exports.Bindings = [
-    DenonAVR.Binding,
+exports.bindings = [
+    DenonAVR.binding,
 ];

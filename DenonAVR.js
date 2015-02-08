@@ -17,7 +17,7 @@ exports.Model = iotdb.make_model('DenonAVR')
     .make()
     ;
 
-exports.Binding = {
+exports.binding = {
     bridge: require('./DenonAVRBridge').Bridge,
     model: exports.Model,
 };
