@@ -20,13 +20,8 @@
  *  limitations under the License.
  */
 
-"use struct";
-
-var iotdb = require('iotdb')
-var _ = iotdb.helpers;
-
-var DenonAVR = require('./DenonAVR');
+"use strict";
 
 exports.bindings = [
-    DenonAVR.binding,
+    require('./DenonAVR').binding,
 ];
