@@ -30,7 +30,6 @@ var model = require('./DenonAVRModel').Model;
 
 exports.bindings = [
     {
-        name: "DenonAVR",
         bridge: bridge,
         model: model,
     }
