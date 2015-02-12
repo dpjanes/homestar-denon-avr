@@ -2,19 +2,20 @@
  *  Use a Model to manipulate semantically
  */
 
-var iotdb = require("iotdb");
+var homestar = require("homestar");
+var _ = homestar._;
 
-var DenonAVR = require('../DenonAVR');
+var ModelBinding = require('../DenonAVR');
 
-wrapper = iotdb.bridge_wrapper(DenonAVR.binding, { mdns: true });
+wrapper = _.bridge_wrapper(ModelBinding.binding, { mdns: true });
 wrapper.on('model', function(model) {
     model.on_change(function(model) {
         console.log("+ state\n ", model.state());
     });
     model.on_meta(function(model) {
-        console.log("+ meta\n ", model.meta().state());
+        console.log("+ meta\n ", _.ld(model.meta().state()));
     });
     model.set('volume', 0.25);
     
-    console.log("+ discovered\n ", model.meta().state(), "\n ", model.thing_id());
+    console.log("+ discovered\n ", _.ld(model.meta().state()), "\n ", model.thing_id());
 });
