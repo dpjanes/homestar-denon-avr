@@ -13,9 +13,9 @@ wrapper.on('model', function(model) {
         console.log("+ state\n ", model.state());
     });
     model.on_meta(function(model) {
-        console.log("+ meta\n ", _.ld(model.meta().state()));
+        console.log("+ meta\n ", _.ld.compact(model.meta().state()));
     });
     model.set('volume', 0.25);
     
-    console.log("+ discovered\n ", _.ld(model.meta().state()), "\n ", model.thing_id());
+    console.log("+ discovered\n ", _.ld.compact(model.meta().state()), "\n ", model.thing_id());
 });

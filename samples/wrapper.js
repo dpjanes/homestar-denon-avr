@@ -22,5 +22,5 @@ wrapper.on('meta', function(bridge) {
     console.log("+ meta", _.ld.compact(bridge.meta()));
 })
 wrapper.on('disconnected', function(bridge) {
-    console.log("+ disconnected", _.ld.compact(bridge.meta())_;
+    console.log("+ disconnected", _.ld.compact(bridge.meta()));
 })
