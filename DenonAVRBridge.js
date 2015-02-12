@@ -22,15 +22,15 @@
 
 "use strict";
 
-var iotdb = require('iotdb')
-var _ = iotdb.helpers;
-var net = require('net');
+var homestar = require('homestar')
+var _ = homestar._;
 
+var net = require('net');
 var mdns = require('mdns');
 
 var bunyan = require('bunyan');
 var logger = bunyan.createLogger({
-    name: 'iotdb',
+    name: 'homestar-denon-avr',
     module: 'DenonAVRBridge',
 });
 

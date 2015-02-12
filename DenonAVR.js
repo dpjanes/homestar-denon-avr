@@ -6,14 +6,14 @@
  *  2014-12-06
  */
 
-var iotdb = require("iotdb")
+var homestar = require("homestar")
 
-exports.Model = iotdb.make_model('DenonAVR')
+exports.Model = homestar.make_model('DenonAVR')
     .name("Denon AVR")
     .description("Denon Audio/Visual Receivers")
-    .io("on", "on-value", iotdb.boolean.on)
-    .io("volume", "volume-value", iotdb.percent.volume)
-    .io("band", "band-value", iotdb.string.band)
+    .io("on", "on-value", homestar.boolean.on)
+    .io("volume", "volume-value", homestar.percent.volume)
+    .io("band", "band-value", homestar.string.band)
     .make()
     ;
 
