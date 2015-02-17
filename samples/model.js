@@ -1,13 +1,15 @@
 /*
- *  Use a Model to manipulate semantically
+ *  How to use this module stand-alone
  */
+try {
+    var module = require('homestar-denon-avr')
+} catch (x) {
+    var module = require('../index')
+}
 
-var homestar = require("homestar");
-var _ = homestar._;
+var _ = module.homestar._;
 
-var ModelBinding = require('../DenonAVR');
-
-wrapper = _.bridge_wrapper(ModelBinding.binding, { mdns: true });
+wrapper = module.wrap("DenonAVR", { mdns: true });
 wrapper.on('model', function(model) {
     model.on_change(function(model) {
         console.log("+ state\n ", model.state());

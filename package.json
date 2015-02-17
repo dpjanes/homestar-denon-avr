@@ -1,0 +1,22 @@
+{
+    "author": "David P. Janes <davidjanes@iotdb.org> (https://iotdb.org)", 
+    "bugs": {
+        "url": "https://github.com/dpjanes/homestar-denon-avr/issues"
+    }, 
+    "dependencies": {
+        "homestar": ">=0.0.46", 
+        "mdns": "~2.2.6"
+    }, 
+    "description": "HomeStar / IOTDB Bridge for Denon AVR", 
+    "homepage": "https://homestar.io", 
+    "homestar": {}, 
+    "license": "Apache-2.0", 
+    "main": "index.js", 
+    "name": "homestar-denon-avr", 
+    "private": false, 
+    "repository": {
+        "type": "git", 
+        "url": "https://github.com/dpjanes/homestar-denon-avr"
+    }, 
+    "version": "0.0.1"
+}

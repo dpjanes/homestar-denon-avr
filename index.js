@@ -22,6 +22,12 @@
 
 "use strict";
 
+exports.Bridge = require('./DenonAVRBridge');
 exports.bindings = [
     require('./DenonAVR').binding,
 ];
+
+exports.homestar = require("homestar");
+exports.wrap = function(name, initd) {
+    return exports.homestar.make_wrap(name, exports.bindings, initd)
+};

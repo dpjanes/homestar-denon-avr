@@ -1,4 +1,5 @@
 /*
+ *  NOTE: prefer to do the way 'model.js' works
  *  Connect to a Denon AVR by searching MDNS/Bonjour
  */
 

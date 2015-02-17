@@ -2,7 +2,8 @@
 
 Connect and control Denon AVR(s) with HomeStar and IOTDB.
 
-See <a href="samples/">the samples</a> for details how to add to your project.
+See <a href="samples/">the samples</a> for details how to add to your project,
+particularly <code>model.js</code>.
 
 ## About
 
