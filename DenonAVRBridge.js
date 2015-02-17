@@ -24,11 +24,11 @@
 
 var homestar = require('homestar')
 var _ = homestar._;
+var bunyan = homestar.bunyan;
 
 var net = require('net');
 var mdns = require('mdns');
 
-var bunyan = require('bunyan');
 var logger = bunyan.createLogger({
     name: 'homestar-denon-avr',
     module: 'DenonAVRBridge',
