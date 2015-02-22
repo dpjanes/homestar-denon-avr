@@ -11,9 +11,9 @@ var homestar = require("homestar")
 exports.Model = homestar.make_model('DenonAVR')
     .name("Denon AVR")
     .description("Denon Audio/Visual Receivers")
-    .io("on", "on-value", homestar.boolean.on)
-    .io("volume", "volume-value", homestar.percent.volume)
-    .io("band", "band-value", homestar.string.band)
+    .io("on", homestar.boolean.on)
+    .io("volume", homestar.percent.volume)
+    .io("band", homestar.string.band)
     .make()
     ;
 

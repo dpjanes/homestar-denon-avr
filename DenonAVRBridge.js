@@ -340,9 +340,9 @@ DenonAVRBridge.prototype._received = function(message) {
     var value = parts[1];
 
     if (key === "SI") {
-        key = "band-value";
+        key = "band";
     } else if (key == "MV") {
-        key = "volume-value";
+        key = "volume";
         value = parseInt(value);
         if (value >= 100) {
             value = value / 10;
@@ -351,7 +351,7 @@ DenonAVRBridge.prototype._received = function(message) {
         value = Math.round(value * 1000);
         value = value / 1000.0;
     } else if (key == "PW") {
-        key = "on-value";
+        key = "on";
         if (value === "ON") {
             value = true;
         } else {
