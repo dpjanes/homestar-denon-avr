@@ -4,10 +4,22 @@
         "url": "https://github.com/dpjanes/homestar-denon-avr/issues"
     }, 
     "dependencies": {
-        "iotdb": ">=0.0.46", 
-        "mdns": "~2.2.6"
+        "homestar": ">=0.0.48", 
+        "iotdb": ">=0.4.16", 
+        "mdns": "~2.2.8"
     }, 
     "description": "HomeStar / IOTDB Bridge for Denon AVR", 
+    "devDependencies": {
+        "grunt": "~0.4.5", 
+        "grunt-contrib-jshint": "~0.10.0", 
+        "grunt-contrib-nodeunit": "~0.2.0", 
+        "grunt-contrib-uglify": "~0.5.0", 
+        "grunt-contrib-watch": "~0.5.0", 
+        "grunt-jsbeautifier": "^0.2.7", 
+        "jshint-stylish": "~0.1.3", 
+        "load-grunt-tasks": "~0.2.0", 
+        "request": "^2.36.0"
+    }, 
     "homepage": "https://homestar.io", 
     "homestar": {}, 
     "license": "Apache-2.0", 
@@ -18,5 +30,8 @@
         "type": "git", 
         "url": "https://github.com/dpjanes/homestar-denon-avr"
     }, 
-    "version": "0.0.1"
+    "scripts": {
+        "test": "grunt"
+    }, 
+    "version": "0.0.2"
 }
