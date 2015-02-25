@@ -5,6 +5,19 @@ Connect and control Denon AVR(s) with HomeStar and IOTDB.
 See <a href="samples/">the samples</a> for details how to add to your project,
 particularly <code>model.js</code> and <code>iotdb.js</code>.
 
+# Quick Start
+
+Set the TV to channel 3 (see the examples for more! really!)
+
+	$ npm install -g homestar
+	$ npm install iotdb
+	$ homestar install homestar-denon-avr
+	$ node
+	>>> iotdb = require('iotdb')
+	>>> iot = iotdb.iot()
+	>>> things = iot.connect("LGSmartTV")
+	>>> things.set(":channel", 3)
+
 ## About
 
 This bridge will allow you to:
