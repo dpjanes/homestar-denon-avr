@@ -3,7 +3,7 @@
 Connect and control Denon AVR(s) with HomeStar and IOTDB.
 
 See <a href="samples/">the samples</a> for details how to add to your project,
-particularly <code>model.js</code>.
+particularly <code>model.js</code> and <code>iotdb.js</code>.
 
 ## About
 
@@ -20,12 +20,6 @@ If you want to add more controls, it should be fairly
 straight forward. See the <a href="docs">docs</a> folder.
 
 ### Push / controls
-
-* <code>volume</code>: number between 0 and 1
-* <code>band</code>: Denon AVR "Select Input" band (see below)
-* <code>on</code>: true or false
-
-### Pull / readings
 
 * <code>volume</code>: number between 0 and 1
 * <code>band</code>: Denon AVR "Select Input" band (see below)
