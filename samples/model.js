@@ -7,7 +7,7 @@ try {
     var module = require('../index')
 }
 
-var _ = module.homestar._;
+var _ = module.iotdb._;
 
 wrapper = module.wrap("DenonAVR", { mdns: true });
 wrapper.on('thing', function(model) {
