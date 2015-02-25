@@ -44,7 +44,7 @@ module.exports = function (grunt) {
         },
         jsbeautifier: {
             files: [
-                '*js.js'
+                '*.js'
             ],
             options: {
                 js: {
@@ -57,6 +57,6 @@ module.exports = function (grunt) {
     });
 
     // Default task.
-    grunt.registerTask('default', ['jsbeautifier', 'jshint', 'nodeunit']);
+    grunt.registerTask('default', ['jsbeautifier', 'jshint']);
 
 };

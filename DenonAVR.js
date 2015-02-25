@@ -6,7 +6,7 @@
  *  2014-12-06
  */
 
-var iotdb = require("iotdb")
+var iotdb = require("iotdb");
 
 exports.Model = iotdb.make_model('DenonAVR')
     .name("Denon AVR")
@@ -14,8 +14,7 @@ exports.Model = iotdb.make_model('DenonAVR')
     .io("on", iotdb.boolean.on)
     .io("volume", iotdb.percent.volume)
     .io("band", iotdb.string.band)
-    .make()
-    ;
+    .make();
 
 exports.binding = {
     bridge: require('./DenonAVRBridge').Bridge,
