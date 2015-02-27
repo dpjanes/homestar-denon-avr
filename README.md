@@ -24,19 +24,25 @@ This bridge will allow you to:
 
 * set volume, band, and on (power)
 * get same
-* connect to Denon AVR using specified prot
-* connect to Denon AVR by mDNS / Bounjour discovery
+* connect to Denon AVR using specified host
+* connect to Denon AVR by mDNS / Bounjour discovery (default)
 
 ## Parameters
 
 If you want to add more controls, it should be fairly
 straight forward. See the <a href="docs">docs</a> folder.
 
-### Push / controls
-
 * <code>volume</code>: number between 0 and 1
 * <code>band</code>: Denon AVR "Select Input" band (see below)
 * <code>on</code>: true or false
+  
+e.g.
+
+    {
+        "volume": 0.18,
+        "band": "MEDIA",
+        "on": true
+    }
 
 ### Bands
 
