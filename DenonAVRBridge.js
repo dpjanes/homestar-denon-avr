@@ -49,14 +49,17 @@ var logger = bunyan.createLogger({
 var DenonAVRBridge = function (initd, native) {
     var self = this;
 
-    self.initd = _.defaults(initd, {
-        name: "Denon AVR",
-        poll: 30,
-        retry: 15,
-        port: 23,
-        host: null,
-        mdns: true,
-    });
+    self.initd = _.defaults(initd,
+        iotdb.keystore().get("bridges/DenonAVRBridge/initd"),
+        {
+            name: "Denon AVR",
+            poll: 30,
+            retry: 15,
+            port: 23,
+            host: null,
+            mdns: true,
+        }
+    );
     self.native = native;
     self.stated = {};
     self.max_volume = 98;

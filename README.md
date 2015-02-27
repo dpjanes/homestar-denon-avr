@@ -9,14 +9,14 @@ particularly <code>model.js</code> and <code>iotdb.js</code>.
 
 Set the TV to channel 3 (see the examples for more! really!)
 
-	$ npm install -g homestar
+	$ npm install -g homestar ## with 'sudo' if error
 	$ npm install iotdb
 	$ homestar install homestar-denon-avr
 	$ node
 	>>> iotdb = require('iotdb')
 	>>> iot = iotdb.iot()
-	>>> things = iot.connect("LGSmartTV")
-	>>> things.set(":channel", 3)
+	>>> things = iot.connect("DenonAVR")
+	>>> things.set(":volume", 0.5)
 
 ## About
 
