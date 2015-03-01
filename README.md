@@ -10,7 +10,7 @@ particularly <code>model.js</code> and <code>iotdb.js</code>.
 Set the TV to channel 3 (see the examples for more! really!)
 
 	$ npm install -g homestar ## with 'sudo' if error
-	$ npm install iotdb
+	$ homestar setup
 	$ homestar install homestar-denon-avr
 	$ node
 	>>> iotdb = require('iotdb')
