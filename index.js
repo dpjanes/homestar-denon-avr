@@ -22,8 +22,6 @@
 
 "use strict";
 
-exports.iotdb_module = true;
-
 exports.Bridge = require('./DenonAVRBridge');
 exports.bindings = [
     require('./DenonAVR').binding,
