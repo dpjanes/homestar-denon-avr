@@ -4,7 +4,6 @@
         "url": "https://github.com/dpjanes/homestar-denon-avr/issues"
     }, 
     "dependencies": {
-        "iotdb": ">=0.4.16", 
         "mdns": "~2.2.8"
     }, 
     "description": "HomeStar / IOTDB Bridge for Denon AVR", 
@@ -24,6 +23,9 @@
     "license": "Apache-2.0", 
     "main": "index.js", 
     "name": "homestar-denon-avr", 
+    "peerDependencies": {
+        "iotdb": ">=0.5.3"
+    }, 
     "private": false, 
     "repository": {
         "type": "git", 
