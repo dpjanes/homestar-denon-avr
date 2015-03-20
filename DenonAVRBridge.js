@@ -300,9 +300,9 @@ DenonAVRBridge.prototype._setup_events = function () {
             return;
         }
 
-        self.native.removeListener('data', self._on_data);
-        self.native.removeListener('end', self._on_end);
-        self.native.removeListener('error', self._on_error);
+        self.native.removeListener('data', _on_data);
+        self.native.removeListener('end', _on_end);
+        self.native.removeListener('error', _on_error);
         self.native = null;
 
         // disconnection is a metadata change
@@ -465,7 +465,7 @@ DenonAVRBridge.prototype.pull = function () {
  *  <ul>
  *  <li><code>iot:thing</code> required - a unique ID
  *  <li><code>iot:device</code> suggested if linking multiple things together
- *  <li><code>iot:name</code>
+ *  <li><code>schema:name</code>
  *  <li><code>iot:number</code>
  *  <li><code>schema:manufacturer</code>
  *  <li><code>schema:model</code>
@@ -475,7 +475,7 @@ DenonAVRBridge.prototype.meta = function () {
 
     return {
         "iot:thing": _.id.thing_urn.network_unique("DenonAVR", self.initd.name || "DenonAVR"),
-        "iot:name": self.initd.name || "DenonAVR",
+        "schema:name": self.initd.name || "DenonAVR",
         "schema:manufacturer": "http://www.denon.com/",
     };
 };

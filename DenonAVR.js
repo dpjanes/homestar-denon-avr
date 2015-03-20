@@ -12,7 +12,7 @@ exports.Model = iotdb.make_model('DenonAVR')
     .name("Denon AVR")
     .description("Denon Audio/Visual Receivers")
     .io("on", iotdb.boolean.on)
-    .io("volume", iotdb.percent.volume)
+    .io("volume", iotdb.number.unit.volume)
     .io("band", iotdb.string.band)
     .make();
 
