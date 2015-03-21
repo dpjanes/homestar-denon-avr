@@ -24,7 +24,7 @@
 
 exports.Bridge = require('./DenonAVRBridge');
 exports.bindings = [
-    require('./DenonAVR').binding,
+    require('./models/DenonAVR').binding,
 ];
 
 exports.iotdb = require("iotdb");

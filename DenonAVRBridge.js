@@ -221,7 +221,7 @@ DenonAVRBridge.prototype._discover_host = function (discoverd) {
                 port: discoverd.port,
             }, "throwing away a client that didn't return MV and will try again");
 
-            self._destroy();
+            _destroy();
         }
 
         logger.info({
