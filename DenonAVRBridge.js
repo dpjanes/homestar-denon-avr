@@ -83,6 +83,14 @@ DenonAVRBridge.prototype.discover = function () {
         self._discover_host(self.initd);
     } else if (self.initd.mdns) {
         var browser = mdns.createBrowser(mdns.tcp('http'));
+        browser.on('error', function (error) {
+            logger.error({
+                method: "discover",
+                unique_id: self.unique_id,
+                error: error,
+                cause: "likely network related - ignoring",
+            }, "error");
+        });
         browser.on('serviceUp', function (service) {
             if (service.port !== 80) {
                 return;
