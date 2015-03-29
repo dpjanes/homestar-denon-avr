@@ -31,7 +31,8 @@ echo "=================="
 
     tar cf - \
         README.md LICENSE homestar.json package.json \
-        *.js \
+        DenonAVRBridge.js index.js \
+        models/*js \
         |
     ( cd "${NPM_DST}" && tar xvf - )
 
