@@ -6,7 +6,7 @@
 var iotdb = require("iotdb");
 var _ = iotdb._;
 
-var ModelBinding = require('../DenonAVR');
+var ModelBinding = require('../models/DenonAVR');
 
 wrapper = _.bridge_wrapper(ModelBinding.binding, { mdns: true });
 wrapper.on('bridge', function(bridge) {

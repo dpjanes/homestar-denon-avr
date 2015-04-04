@@ -61,7 +61,8 @@ var DenonAVRBridge = function (initd, native) {
         }
     );
     self.native = native;
-    self.stated = {};
+    self.istated = {};
+    self.ostated = {};
     self.max_volume = 98;
 };
 
@@ -378,12 +379,12 @@ DenonAVRBridge.prototype._received = function (message) {
         return;
     }
 
-    if (self.stated[key] === value) {
+    if (self.istated[key] === value) {
         return;
     }
 
-    self.stated[key] = value;
-    self.pulled(self.stated);
+    self.istated[key] = value;
+    self.pulled(self.istated);
 };
 
 /**
@@ -409,6 +410,12 @@ DenonAVRBridge.prototype.disconnect = function () {
 DenonAVRBridge.prototype.push = function (pushd) {
     var self = this;
     if (!self.native) {
+        return;
+    }
+
+    /* if we don't know whether we are on or off, defer until later */
+    if (self.istated.on === undefined) {
+        _.extend(self.ostated, pushd);
         return;
     }
 
