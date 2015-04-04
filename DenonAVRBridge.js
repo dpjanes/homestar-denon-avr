@@ -353,8 +353,7 @@ DenonAVRBridge.prototype._received = function (message) {
     if (key === "SI") {
         key = "band";
 	} else if (key === "MS") {
-		console.log(message);
-        key = "soundmode";
+		key = "soundmode";
 		value = message.substring(3);
     } else if (key === "MV") {
         key = "volume";
