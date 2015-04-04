@@ -390,17 +390,11 @@ DenonAVRBridge.prototype._received = function (message) {
     self.istated[key] = value;
     self.pulled(self.istated);
 
-    // special for on - very complicated
+    // if just turned on, send deferred data (if not a defer timer)
     if ((key === "on") && self.deferd && !self.defer_timer_id) {
-        self.defer_timer_id = setTimeout(function() {
-            var deferd = self.deferd;
-
-            self.deferd = null;
-            self.defer_timer_id = null;
-            self.defer_time = 0;
-
-            self.push(deferd);
-        }, self.defer_time);
+        var deferd = self.deferd;
+        self.deferd = null;
+        self.push(deferd);
     }
 };
 
@@ -450,8 +444,16 @@ DenonAVRBridge.prototype.push = function (pushd) {
     // if we are not on, we defer until that is done 
     if (!self.istated.on) {
         self.native.write("\rPWON\r");
+
         self.deferd = _.defaults({}, pushd, self.deferd);
-        self.defer_time = 10 * 1000;
+        self.defer_timer_id = setTimeout(function() {
+            var deferd = self.deferd;
+
+            self.deferd = null;
+            self.defer_timer_id = null;
+
+            self.push(deferd);
+        }, 10 * 1000);
         return;
     }
 
