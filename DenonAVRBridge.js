@@ -469,7 +469,7 @@ DenonAVRBridge.prototype.pull = function () {
         port: self.initd.port,
     }, "polling Denon AVR for current state");
 
-    self.native.write("MV?\rSI?\rPW?\rMU?\nMS?\n");
+    self.native.write("MV?\rSI?\rPW?\rMU?\rMS?\r");
 };
 
 /* --- state --- */
