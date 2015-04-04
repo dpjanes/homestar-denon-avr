@@ -345,13 +345,16 @@ DenonAVRBridge.prototype._received = function (message) {
         return;
     }
 
-    message = message.replace(/^(SI|PW|DC|SV|MV(?=\d))/, "$1 ");
+    message = message.replace(/^(SI|PW|DC|SV|MS|MV(?=\d))/, "$1 ");
     var parts = message.split(" ", 2);
     var key = parts[0];
     var value = parts[1];
 
     if (key === "SI") {
         key = "band";
+	} else if (key === "MS") {
+		key = "soundmode";
+		value = message.substring(3);
     } else if (key === "MV") {
         key = "volume";
         value = parseInt(value);
@@ -424,6 +427,11 @@ DenonAVRBridge.prototype.push = function (pushd) {
         pushd.on = true;
         self.native.write("\rSI" + pushd.band.toUpperCase() + "\r");
     }
+	
+    if (pushd.soundmode !== undefined) {
+		pushd.on = true;
+        self.native.write("\rMS" + pushd.soundmode.toUpperCase() + "\r");
+    }
 
     if (pushd.on !== undefined) {
         if (pushd.on) {
@@ -460,7 +468,7 @@ DenonAVRBridge.prototype.pull = function () {
         port: self.initd.port,
     }, "polling Denon AVR for current state");
 
-    self.native.write("MV?\rSI?\rPW?\rMU?\n");
+    self.native.write("MV?\rSI?\rPW?\rMU?\nMS?\n");
 };
 
 /* --- state --- */
