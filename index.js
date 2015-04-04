@@ -22,7 +22,7 @@
 
 "use strict";
 
-exports.Bridge = require('./DenonAVRBridge');
+exports.Bridge = require('./DenonAVRBridge').Bridge;
 exports.bindings = [
     require('./models/DenonAVR').binding,
 ];
