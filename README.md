@@ -42,7 +42,7 @@ e.g.
     {
         "volume": 0.18,
         "band": "MEDIA",
-		"sound_mode": "MCH STEREO",
+        "sound_mode": "MCH STEREO",
         "on": true
     }
 
