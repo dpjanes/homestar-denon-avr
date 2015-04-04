@@ -352,9 +352,9 @@ DenonAVRBridge.prototype._received = function (message) {
 
     if (key === "SI") {
         key = "band";
-	} else if (key === "MS") {
-		key = "soundmode";
-		value = message.substring(3);
+    } else if (key === "MS") {
+        key = "sound_mode";
+        value = message.substring(3);
     } else if (key === "MV") {
         key = "volume";
         value = parseInt(value);
@@ -427,10 +427,10 @@ DenonAVRBridge.prototype.push = function (pushd) {
         pushd.on = true;
         self.native.write("\rSI" + pushd.band.toUpperCase() + "\r");
     }
-	
-    if (pushd.soundmode !== undefined) {
-		pushd.on = true;
-        self.native.write("\rMS" + pushd.soundmode.toUpperCase() + "\r");
+    
+    if (pushd.sound_mode !== undefined) {
+        pushd.on = true;
+        self.native.write("\rMS" + pushd.sound_mode.toUpperCase() + "\r");
     }
 
     if (pushd.on !== undefined) {
