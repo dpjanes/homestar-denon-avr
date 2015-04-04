@@ -32,6 +32,7 @@ var mdns = require('mdns');
 var logger = bunyan.createLogger({
     name: 'homestar-denon-avr',
     module: 'DenonAVRBridge',
+	level: 'warn'
 });
 
 /**
