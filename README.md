@@ -22,7 +22,7 @@ Set the TV to channel 3 (see the examples for more! really!)
 
 This bridge will allow you to:
 
-* set volume, band, and on (power)
+* set volume, band, sound mode, and on (power)
 * get same
 * connect to Denon AVR using specified host
 * connect to Denon AVR by mDNS / Bounjour discovery (default)
@@ -34,6 +34,7 @@ straight forward. See the <a href="docs">docs</a> folder.
 
 * <code>volume</code>: number between 0 and 1
 * <code>band</code>: Denon AVR "Select Input" band (see below)
+* <code>sound_mode</code>: Denon AVR Sound Mode (see below)
 * <code>on</code>: true or false
   
 e.g.
@@ -41,6 +42,7 @@ e.g.
     {
         "volume": 0.18,
         "band": "MEDIA",
+		"sound_mode": "MCH STEREO",
         "on": true
     }
 
@@ -79,3 +81,20 @@ standardized value like <code>iot-attribute:band.phono</code>, etc..
 * IRP
 * FVP
 
+### Sound Modes
+
+Depends on Denon AVR model. Examples of Sound Modes:
+
+* DIRECT
+* PURE DIRECT
+* STEREO
+* STANDARD
+* DOLBY DIGITAL
+* DTS SUROUND
+* MCH STEREO
+* ROCK ARENA
+* JAZZ CLUB
+* MONO MOVIE
+* MATRIX
+* VIDEO GAME
+* VIRTUAL
