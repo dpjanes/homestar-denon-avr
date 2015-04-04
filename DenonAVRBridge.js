@@ -32,7 +32,7 @@ var mdns = require('mdns');
 var logger = bunyan.createLogger({
     name: 'homestar-denon-avr',
     module: 'DenonAVRBridge',
-	level: 'warn'
+    level: 'warn'
 });
 
 /**
@@ -63,8 +63,11 @@ var DenonAVRBridge = function (initd, native) {
     );
     self.native = native;
     self.istated = {};
-    self.ostated = {};
     self.max_volume = 98;
+
+    self.deferd = null;
+    self.defer_time = 0;
+    self.defer_timer_id = null;
 };
 
 /* --- lifecycle --- */
@@ -386,6 +389,19 @@ DenonAVRBridge.prototype._received = function (message) {
 
     self.istated[key] = value;
     self.pulled(self.istated);
+
+    // special for on - very complicated
+    if ((key === "on") && self.deferd && !self.defer_timer_id) {
+        self.defer_timer_id = setTimeout(function() {
+            var deferd = self.deferd;
+
+            self.deferd = null;
+            self.defer_timer_id = null;
+            self.defer_time = 0;
+
+            self.push(deferd);
+        }, self.defer_time);
+    }
 };
 
 /**
@@ -414,15 +430,32 @@ DenonAVRBridge.prototype.push = function (pushd) {
         return;
     }
 
-    /* if we don't know whether we are on or off, defer until later */
-    if (self.istated.on === undefined) {
-        _.extend(self.ostated, pushd);
+    // if we don't know whether we are on or off, defer until later 
+    if ((self.istated.on === undefined) || self.defer_timer_id) {
+        self.deferd = _.defaults({}, pushd, self.deferd);
+        return;
+    }
+
+    // if turning off, ignore everything else 
+    if (pushd.on === false) {
+        if (self.istated.on === false) {
+            return;
+        }
+
+        self.native.write("\rPWSTANDBY\r");
+        return;
+    }
+
+    // all other commands assume that we are turning on
+    // if we are not on, we defer until that is done 
+    if (!self.istated.on) {
+        self.native.write("\rPWON\r");
+        self.deferd = _.defaults({}, pushd, self.deferd);
+        self.defer_time = 10 * 1000;
         return;
     }
 
     if (pushd.volume !== undefined) {
-        pushd.on = true;
-
         var volume = Math.min(Math.max(0, Math.round(pushd.volume * self.max_volume)), self.max_volume);
         if (volume < 10) {
             self.native.write("\rMV0" + volume + "\r");
@@ -432,21 +465,11 @@ DenonAVRBridge.prototype.push = function (pushd) {
     }
 
     if (pushd.band !== undefined) {
-        pushd.on = true;
         self.native.write("\rSI" + pushd.band.toUpperCase() + "\r");
     }
     
     if (pushd.sound_mode !== undefined) {
-        pushd.on = true;
         self.native.write("\rMS" + pushd.sound_mode.toUpperCase() + "\r");
-    }
-
-    if (pushd.on !== undefined) {
-        if (pushd.on) {
-            self.native.write("\rPWON\r");
-        } else {
-            self.native.write("\rPWSTANDBY\r");
-        }
     }
 
     logger.info({
