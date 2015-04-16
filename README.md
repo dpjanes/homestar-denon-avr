@@ -21,12 +21,10 @@ Set the TV to channel 3 (see the examples for more! really!)
 
 # Raspberry Pi
 
-If this does not install, make sure to run this command
+If this does not install, make sure to run these commands
 
     sudo apt-get install libavahi-compat-libdnssd-dev
-
-sudo apt-get install avahi-utils 
-avahi-browse --all --resolve --terminate
+    sudo apt-get install avahi-utils 
 
 ## About
 

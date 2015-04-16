@@ -120,7 +120,6 @@ DenonAVRBridge.prototype._discover_mdns = function () {
             browser.stop();
 
             self._discover_amdns();
-
         }
     });
     browser.on('serviceUp', function (service) {
