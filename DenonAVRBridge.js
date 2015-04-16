@@ -27,7 +27,12 @@ var _ = iotdb._;
 var bunyan = iotdb.bunyan;
 
 var net = require('net');
-var mdns = require('mdns');
+try {
+    var mdns = require('mdns');
+} catch (x) {
+    mdns = null;
+}
+var amdns = require('avahi-mdns-kludge');
 
 var logger = bunyan.createLogger({
     name: 'homestar-denon-avr',
@@ -87,32 +92,82 @@ DenonAVRBridge.prototype.discover = function () {
     if (self.initd.host) {
         self._discover_host(self.initd);
     } else if (self.initd.mdns) {
-        var browser = mdns.createBrowser(mdns.tcp('http'));
-        browser.on('error', function (error) {
-            logger.error({
-                method: "discover",
-                unique_id: self.unique_id,
-                error: error,
-                cause: "likely network related - ignoring",
-            }, "error");
-        });
-        browser.on('serviceUp', function (service) {
-            if (service.port !== 80) {
-                return;
-            } else if (!service.addresses) {
-                return;
-            } else if (service.addresses.length === 0) {
-                return;
-            }
+        if (mdns) {
+            self._discover_mdns();
+        } else if (amdns) {
+            self._discover_amdns();
+        }
 
-            self._discover_host(_.defaults({
-                host: service.addresses[0],
-                name: service.name,
-                probe: true,
-            }, self.initd));
-        });
-        browser.start();
     }
+};
+
+DenonAVRBridge.prototype._discover_mdns = function () {
+    var self = this;
+
+    var browser = mdns.createBrowser(mdns.tcp('http'));
+    browser.on('error', function (error) {
+        logger.error({
+            method: "discover",
+            unique_id: self.unique_id,
+            error: error,
+            cause: "likely network related - ignoring",
+        }, "error");
+
+        if ((error.code === -3008) && mdns && amdns) {
+            mdns = null;
+
+            logger.warn("switching to avahi-mdns-kludge");
+            browser.stop();
+
+            self._discover_amdns();
+
+        }
+    });
+    browser.on('serviceUp', function (service) {
+        if (service.port !== 80) {
+            return;
+        } else if (!service.addresses) {
+            return;
+        } else if (service.addresses.length === 0) {
+            return;
+        }
+
+        self._discover_host(_.defaults({
+            host: service.addresses[0],
+            name: service.name,
+            probe: true,
+        }, self.initd));
+    });
+    browser.start();
+};
+
+DenonAVRBridge.prototype._discover_amdns = function () {
+    var self = this;
+
+    if (!amdns) {
+        return;
+    }
+
+    amdns.browser(function(error, d) {
+        if (error) {
+            return;
+        }
+
+        if (!d.deviceid) {
+            return;
+        }
+
+        if (!d.deviceid.match(/^00:05:CD:/)) {
+            return;
+        }
+
+        self._discover_host(_.defaults({
+            host: d.address,
+            name: d.hostname,
+            probe: false,
+        }, self.initd));
+
+    });
 };
 
 /**
