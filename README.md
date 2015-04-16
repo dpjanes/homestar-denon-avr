@@ -17,6 +17,13 @@ Set the TV to channel 3 (see the examples for more! really!)
 	>>> iot = iotdb.iot()
 	>>> things = iot.connect("DenonAVR")
 	>>> things.set(":volume", 0.5)
+    >>>
+
+# Raspberry Pi
+
+If this does not install, make sure to run this command
+
+    sudo apt-get install libavahi-compat-libdnssd-dev
 
 ## About
 
