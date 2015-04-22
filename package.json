@@ -4,6 +4,7 @@
         "url": "https://github.com/dpjanes/homestar-denon-avr/issues"
     }, 
     "dependencies": {
+        "avahi-mdns-kludge": "0.0.3",
         "mdns": "~2.2.8"
     }, 
     "description": "HomeStar / IOTDB Bridge for Denon AVR", 
