@@ -573,15 +573,6 @@ DenonAVRBridge.prototype.reachable = function () {
  */
 DenonAVRBridge.prototype.configure = function (app) {};
 
-/* --- injected: THIS CODE WILL BE REMOVED AT RUNTIME, DO NOT MODIFY  --- */
-DenonAVRBridge.prototype.discovered = function (bridge) {
-    throw new Error("DenonAVRBridge.discovered not implemented");
-};
-
-DenonAVRBridge.prototype.pulled = function (pulld) {
-    throw new Error("DenonAVRBridge.pulled not implemented");
-};
-
 /*
  *  API
  */
