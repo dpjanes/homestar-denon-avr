@@ -17,34 +17,34 @@ exports.Model = iotdb.make_model('DenonAVR')
     .io("band", iotdb.string.band)
     .io("band",
         iotdb
-            .make_string(":band")
-            .enumeration(_.ld.expand([
-                "iot-attribute:band.aux",
-                "iot-attribute:band.bluray",
-                "iot-attribute:band.cable",
-                "iot-attribute:band.cd",
-                "iot-attribute:band.dvd",
-                "iot-attribute:band.dvr",
-                "iot-attribute:band.game",
-                "iot-attribute:band.game#1",
-                "iot-attribute:band.game#2",
-                "iot-attribute:band.phono",
-                "iot-attribute:band.radio.hd",
-                "iot-attribute:band.radio.internet",
-                "iot-attribute:band.radio.tuner",
-                "iot-attribute:band.satellite",
-                "iot-attribute:band.streaming.flickr",
-                "iot-attribute:band.streaming.lastfm",
-                "iot-attribute:band.streaming.napster",
-                "iot-attribute:band.streaming.pandora",
-                "iot-attribute:band.streaming.rhapsody",
-                "iot-attribute:band.tv",
-                "iot-attribute:band.usb",
-                "iot-attribute:band.vendor.dock",
-                "iot-attribute:band.vendor.favorites",
-                "iot-attribute:band.vendor.ipod",
-                "iot-attribute:band.vendor.media-player",
-            ]))
+        .make_string(":band")
+        .enumeration(_.ld.expand([
+            "iot-attribute:band.aux",
+            "iot-attribute:band.bluray",
+            "iot-attribute:band.cable",
+            "iot-attribute:band.cd",
+            "iot-attribute:band.dvd",
+            "iot-attribute:band.dvr",
+            "iot-attribute:band.game",
+            "iot-attribute:band.game#1",
+            "iot-attribute:band.game#2",
+            "iot-attribute:band.phono",
+            "iot-attribute:band.radio.hd",
+            "iot-attribute:band.radio.internet",
+            "iot-attribute:band.radio.tuner",
+            "iot-attribute:band.satellite",
+            "iot-attribute:band.streaming.flickr",
+            "iot-attribute:band.streaming.lastfm",
+            "iot-attribute:band.streaming.napster",
+            "iot-attribute:band.streaming.pandora",
+            "iot-attribute:band.streaming.rhapsody",
+            "iot-attribute:band.tv",
+            "iot-attribute:band.usb",
+            "iot-attribute:band.vendor.dock",
+            "iot-attribute:band.vendor.favorites",
+            "iot-attribute:band.vendor.ipod",
+            "iot-attribute:band.vendor.media-player",
+        ]))
     )
     .make();
 

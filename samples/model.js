@@ -1,23 +1,28 @@
 /*
  *  How to use this module stand-alone
  */
+
+"use strict";
+
 try {
-    var module = require('homestar-denon-avr')
+    var m = require('homestar-denon-avr');
 } catch (x) {
-    var module = require('../index')
+    var m = require('../index');
 }
 
-var _ = module.iotdb._;
+var _ = m.iotdb._;
 
-wrapper = module.wrap("DenonAVR", { mdns: true });
-wrapper.on('thing', function(model) {
-    model.on("state", function(model) {
-        console.log("+ state\n ", model.state());
+var wrapper = m.wrap("DenonAVR", {
+    mdns: true
+});
+wrapper.on('thing', function (model) {
+    model.on("state", function (model) {
+        console.log("+ state\n ", model.state("istate"));
     });
-    model.on("meta", function(model) {
-        console.log("+ meta\n ", _.ld.compact(model.meta().state()));
+    model.on("meta", function (model) {
+        console.log("+ meta\n ", model.thing_id(), "\n ", model.state("meta"));
     });
     model.set('volume', 0.25);
-    
-    console.log("+ discovered\n ", _.ld.compact(model.meta().state()), "\n ", model.thing_id());
+
+    console.log("+ discovered\n ", model.thing_id(), "\n ", model.state("meta"));
 });

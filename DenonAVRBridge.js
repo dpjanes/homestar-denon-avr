@@ -50,8 +50,7 @@ var DenonAVRBridge = function (initd, native) {
     var self = this;
 
     self.initd = _.defaults(initd,
-        iotdb.keystore().get("bridges/DenonAVRBridge/initd"),
-        {
+        iotdb.keystore().get("bridges/DenonAVRBridge/initd"), {
             name: "Denon AVR",
             poll: 30,
             retry: 15,
@@ -141,7 +140,7 @@ DenonAVRBridge.prototype._discover_amdns = function () {
         return;
     }
 
-    amdns.browser(function(error, d) {
+    amdns.browser(function (error, d) {
         if (error) {
             return;
         }
@@ -493,7 +492,7 @@ DenonAVRBridge.prototype.push = function (pushd) {
         self.native.write("\rPWON\r");
 
         self.deferd = _.defaults({}, pushd, self.deferd);
-        self.defer_timer_id = setTimeout(function() {
+        self.defer_timer_id = setTimeout(function () {
             var deferd = self.deferd;
 
             self.deferd = null;
@@ -516,7 +515,7 @@ DenonAVRBridge.prototype.push = function (pushd) {
     if (pushd.band !== undefined) {
         self.native.write("\rSI" + pushd.band.toUpperCase() + "\r");
     }
-    
+
     if (pushd.sound_mode !== undefined) {
         self.native.write("\rMS" + pushd.sound_mode.toUpperCase() + "\r");
     }
