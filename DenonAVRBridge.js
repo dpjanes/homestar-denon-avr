@@ -78,7 +78,7 @@ DenonAVRBridge.prototype.name = function () {
 /* --- lifecycle --- */
 
 /**
- *  See {iotdb.bridge.Bridge#XXX} for documentation.
+ *  See {iotdb.bridge.Bridge#discover} for documentation.
  */
 DenonAVRBridge.prototype.discover = function () {
     var self = this;
@@ -164,7 +164,6 @@ DenonAVRBridge.prototype._discover_amdns = function () {
 };
 
 /**
- *  See {iotdb.bridge.Bridge#XXX} for documentation.
  */
 DenonAVRBridge.prototype._discover_host = function (discoverd) {
     var self = this;
@@ -307,7 +306,7 @@ DenonAVRBridge.prototype._discover_host = function (discoverd) {
 };
 
 /**
- *  See {iotdb.bridge.Bridge#XXX} for documentation.
+ *  See {iotdb.bridge.Bridge#connect} for documentation.
  */
 DenonAVRBridge.prototype.connect = function (connectd) {
     var self = this;
@@ -447,7 +446,7 @@ DenonAVRBridge.prototype._received = function (message) {
 };
 
 /**
- *  See {iotdb.bridge.Bridge#XXX} for documentation.
+ *  See {iotdb.bridge.Bridge#disconnect} for documentation.
  */
 DenonAVRBridge.prototype.disconnect = function () {
     var self = this;
@@ -462,7 +461,7 @@ DenonAVRBridge.prototype.disconnect = function () {
 /* --- data --- */
 
 /**
- *  See {iotdb.bridge.Bridge#XXX} for documentation.
+ *  See {iotdb.bridge.Bridge#push} for documentation.
  */
 DenonAVRBridge.prototype.push = function (pushd) {
     var self = this;
@@ -532,7 +531,7 @@ DenonAVRBridge.prototype.push = function (pushd) {
 };
 
 /**
- *  See {iotdb.bridge.Bridge#XXX} for documentation.
+ *  See {iotdb.bridge.Bridge#pull} for documentation.
  */
 DenonAVRBridge.prototype.pull = function () {
     var self = this;
@@ -553,7 +552,7 @@ DenonAVRBridge.prototype.pull = function () {
 /* --- state --- */
 
 /**
- *  See {iotdb.bridge.Bridge#XXX} for documentation.
+ *  See {iotdb.bridge.Bridge#meta} for documentation.
  */
 DenonAVRBridge.prototype.meta = function () {
     var self = this;
@@ -566,14 +565,14 @@ DenonAVRBridge.prototype.meta = function () {
 };
 
 /**
- *  See {iotdb.bridge.Bridge#XXX} for documentation.
+ *  See {iotdb.bridge.Bridge#reachable} for documentation.
  */
 DenonAVRBridge.prototype.reachable = function () {
     return this.native !== null;
 };
 
 /**
- *  See {iotdb.bridge.Bridge#XXX} for documentation.
+ *  See {iotdb.bridge.Bridge#configure} for documentation.
  */
 DenonAVRBridge.prototype.configure = function (app) {};
 
