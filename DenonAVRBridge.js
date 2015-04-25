@@ -470,6 +470,8 @@ DenonAVRBridge.prototype.push = function (pushd) {
         return;
     }
 
+    self._validate_push(pushd);
+
     // if we don't know whether we are on or off, defer until later 
     if ((self.istated.on === undefined) || self.defer_timer_id) {
         self.deferd = _.defaults({}, pushd, self.deferd);
