@@ -2,8 +2,19 @@
 
 Connect and control Denon AVR(s) with HomeStar and IOTDB.
 
+<img src="https://github.com/dpjanes/iotdb-homestar/blob/master/docs/HomeStar.png" align="right" />
+
 See <a href="samples/">the samples</a> for details how to add to your project,
 particularly <code>model.js</code> and <code>iotdb.js</code>.
+
+# Installation
+
+Install Home☆Star first. 
+See: https://github.com/dpjanes/iotdb-homestar#installation
+
+Then
+
+    $ homestar install homestar-template
 
 # Quick Start
 
