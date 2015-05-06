@@ -157,6 +157,7 @@ DenonAVRBridge.prototype._discover_amdns = function () {
             host: d.address,
             name: d.hostname,
             probe: false,
+            retry: 0,
         }, self.initd));
 
     });
@@ -295,10 +296,10 @@ DenonAVRBridge.prototype._discover_host = function (discoverd) {
         client.on('end', _on_end);
     };
 
-    if (self.initd.retry > 0) {
+    if (discoverd.retry > 0) {
         interval = setInterval(function () {
             _discover();
-        }, self.initd.retry * 1000);
+        }, discoverd.retry * 1000);
     }
 
     _discover();
