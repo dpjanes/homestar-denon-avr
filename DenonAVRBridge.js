@@ -66,6 +66,7 @@ var DenonAVRBridge = function (initd, native) {
     self.deferd = null;
     self.defer_time = 0;
     self.defer_timer_id = null;
+    self.defer_dones = [];
 };
 
 DenonAVRBridge.prototype = new iotdb.Bridge();
@@ -441,8 +442,22 @@ DenonAVRBridge.prototype._received = function (message) {
     if ((key === "on") && self.deferd && !self.defer_timer_id) {
         var deferd = self.deferd;
         self.deferd = null;
-        self.push(deferd);
+        self.push(deferd, function() {
+            self._done_defers();
+        });
     }
+};
+
+DenonAVRBridge.prototype._done_defers = function() {
+    var self = this;
+
+    var ds = self.defer_dones;
+    self.defer_dones = [];
+
+    ds.map(function(d) {
+        console.log("HERE:XXX", d);
+        d();
+    });
 };
 
 /**
@@ -463,9 +478,10 @@ DenonAVRBridge.prototype.disconnect = function () {
 /**
  *  See {iotdb.bridge.Bridge#push} for documentation.
  */
-DenonAVRBridge.prototype.push = function (pushd) {
+DenonAVRBridge.prototype.push = function (pushd, done) {
     var self = this;
     if (!self.native) {
+        done(new Error("not connected"));
         return;
     }
 
@@ -474,16 +490,19 @@ DenonAVRBridge.prototype.push = function (pushd) {
     // if we don't know whether we are on or off, defer until later 
     if ((self.istated.on === undefined) || self.defer_timer_id) {
         self.deferd = _.defaults({}, pushd, self.deferd);
+        self.defer_dones.push(done);
         return;
     }
 
     // if turning off, ignore everything else 
     if (pushd.on === false) {
         if (self.istated.on === false) {
+            done();
             return;
         }
 
         self.native.write("\rPWSTANDBY\r");
+        done();
         return;
     }
 
@@ -499,8 +518,11 @@ DenonAVRBridge.prototype.push = function (pushd) {
             self.deferd = null;
             self.defer_timer_id = null;
 
-            self.push(deferd);
+            self.push(deferd, function() {
+                self._done_defers();
+            });
         }, 10 * 1000);
+        self.defer_dones.push(done);
         return;
     }
 
@@ -528,6 +550,7 @@ DenonAVRBridge.prototype.push = function (pushd) {
         port: self.initd.port,
         pushd: pushd,
     }, "pushed");
+    done();
 };
 
 /**
