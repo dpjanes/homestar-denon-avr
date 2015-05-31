@@ -18,7 +18,7 @@ wrapper.on('bridge', function (bridge) {
     bridge.push({
         volume: 0.2,
         band: "DVD",
-    });
+    }, function() {});
 });
 wrapper.on('state', function (bridge, state) {
     console.log("+ state", state);

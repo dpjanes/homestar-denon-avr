@@ -19,6 +19,6 @@ denon.discovered = function (bridge) {
         volume: 0.5,
         band: 'AUX1',
         soundmode: 'MCH STEREO'
-    });
+    }, function() {});
 };
 denon.discover();
