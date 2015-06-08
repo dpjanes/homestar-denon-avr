@@ -27,7 +27,7 @@
         "mdns": "~2.2.8"
     }, 
     "peerDependencies": {
-        "iotdb": ">=0.7.1"
+        "iotdb": "~0.7.6"
     }, 
     "private": false, 
     "repository": {
@@ -37,5 +37,5 @@
     "scripts": {
         "test": "grunt"
     }, 
-    "version": "0.1.1"
+    "version": "0.1.2"
 }
