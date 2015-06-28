@@ -455,7 +455,6 @@ DenonAVRBridge.prototype._done_defers = function() {
     self.defer_dones = [];
 
     ds.map(function(d) {
-        console.log("HERE:XXX", d);
         d();
     });
 };
