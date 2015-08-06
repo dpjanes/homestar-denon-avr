@@ -580,7 +580,7 @@ DenonAVRBridge.prototype.meta = function () {
     var self = this;
 
     return {
-        "iot:thing": _.id.thing_urn.network_unique("DenonAVR", self.initd.name || "DenonAVR"),
+        "iot:thing-id": _.id.thing_urn.network_unique("DenonAVR", self.initd.name || "DenonAVR"),
         "schema:name": self.initd.name || "DenonAVR",
         "schema:manufacturer": "http://www.denon.com/",
     };
