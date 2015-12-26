@@ -34,6 +34,7 @@ try {
 }
 var amdns = require('avahi-mdns-kludge');
 
+
 var logger = bunyan.createLogger({
     name: 'homestar-denon-avr',
     module: 'DenonAVRBridge',
@@ -56,7 +57,8 @@ var DenonAVRBridge = function (initd, native) {
             retry: 15,
             port: 23,
             host: null,
-            mdns: true,
+            mdns: false,
+            upnp: true,
         }
     );
     self.native = native;
@@ -85,12 +87,20 @@ DenonAVRBridge.prototype.discover = function () {
 
     if (self.initd.host) {
         self._discover_host(self.initd);
+    } else if (self.initd.upnp) {
+        self._discover_upnp();
     } else if (self.initd.mdns) {
         if (mdns) {
             self._discover_mdns();
         } else if (amdns) {
             self._discover_amdns();
         }
+
+    } else {
+        logger.error({
+            method: "discover",
+            cause: "make up yer mind!",
+        }, "one of mnds, upnp or host must be selected");
 
     }
 };
@@ -162,6 +172,32 @@ DenonAVRBridge.prototype._discover_amdns = function () {
         }, self.initd));
 
     });
+};
+
+/**
+ *  See {iotdb.bridge.Bridge#discover} for documentation.
+ */
+DenonAVRBridge.prototype._discover_upnp = function () {
+    var self = this;
+
+    var cp = iotdb.module("iotdb-upnp").control_point();
+
+    cp.on("device", function (native) {
+        if (native.deviceType !== 'urn:schemas-upnp-org:device:MediaRenderer:1') {
+            return;
+        } else if ((native.manufacturer || "").toLowerCase() !== 'denon') {
+            return;
+        }
+
+        self._discover_host(_.defaults({
+            host: native.host,
+            name: native.friendlyName,
+            probe: false,
+            retry: 0,
+        }, self.initd));
+    });
+
+    cp.search();
 };
 
 /**
@@ -583,6 +619,11 @@ DenonAVRBridge.prototype.meta = function () {
         "iot:thing-id": _.id.thing_urn.network_unique("DenonAVR", self.initd.name || "DenonAVR"),
         "schema:name": self.initd.name || "DenonAVR",
         "schema:manufacturer": "http://www.denon.com/",
+        "iot:facet": [ 
+            "iot-facet:media", 
+            "iot-facet:media.receiver", 
+            "iot-facet:media.radio", "iot-facet:media.radio.internet", "iot-facet:media.radio.am", "iot-facet:media.radio.fm", 
+        ],
     };
 };
 
