@@ -1,0 +1,44 @@
+CREATE MODEL DenonAvr WITH
+    schema:name = "Denon AVR",
+    schema:description = "Denon Audio/Visual Receivers"
+ATTRIBUTE on WITH
+    schema:name = "on",
+    iot:purpose = iot-purpose:on,
+    iot:type = iot:type.boolean
+ATTRIBUTE volume WITH
+    schema:name = "volume",
+    iot:purpose = iot-purpose:volume,
+    iot:type = iot:type.number,
+    iot:unit = iot-unit:math.fraction.unit,
+    iot:minimum = 0,
+    iot:maximum = 1
+ATTRIBUTE band WITH
+    schema:name = "band",
+    iot:purpose = iot-purpose:band,
+    iot:type = iot:type.string,
+    iot:enumeration = iot-purpose:band.aux,
+    iot:enumeration = iot-purpose:band.bluray,
+    iot:enumeration = iot-purpose:band.cable,
+    iot:enumeration = iot-purpose:band.cd,
+    iot:enumeration = iot-purpose:band.dvd,
+    iot:enumeration = iot-purpose:band.dvr,
+    iot:enumeration = iot-purpose:band.game,
+    iot:enumeration = iot-purpose:band.game#1,
+    iot:enumeration = iot-purpose:band.game#2,
+    iot:enumeration = iot-purpose:band.phono,
+    iot:enumeration = iot-purpose:band.radio.hd,
+    iot:enumeration = iot-purpose:band.radio.internet,
+    iot:enumeration = iot-purpose:band.radio.tuner,
+    iot:enumeration = iot-purpose:band.satellite,
+    iot:enumeration = iot-purpose:band.service.flickr,
+    iot:enumeration = iot-purpose:band.service.lastfm,
+    iot:enumeration = iot-purpose:band.service.napster,
+    iot:enumeration = iot-purpose:band.service.pandora,
+    iot:enumeration = iot-purpose:band.service.rhapsody,
+    iot:enumeration = iot-purpose:band.tv,
+    iot:enumeration = iot-purpose:band.usb,
+    iot:enumeration = iot-purpose:band.vendor.dock,
+    iot:enumeration = iot-purpose:band.vendor.favorites,
+    iot:enumeration = iot-purpose:band.vendor.ipod,
+    iot:enumeration = iot-purpose:band.vendor.media-player
+;
