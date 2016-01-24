@@ -24,7 +24,6 @@
 
 var iotdb = require('iotdb');
 var _ = iotdb._;
-var bunyan = iotdb.bunyan;
 
 var net = require('net');
 try {
@@ -35,7 +34,7 @@ try {
 var amdns = require('avahi-mdns-kludge');
 
 
-var logger = bunyan.createLogger({
+var logger = iotdb.logger({
     name: 'homestar-denon-avr',
     module: 'DenonAVRBridge',
     level: 'warn'
