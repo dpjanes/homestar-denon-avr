@@ -179,7 +179,7 @@ DenonAVRBridge.prototype._discover_amdns = function () {
 DenonAVRBridge.prototype._discover_upnp = function () {
     var self = this;
 
-    var cp = iotdb.module("iotdb-upnp").control_point();
+    var cp = require("iotdb-upnp").control_point();
 
     cp.on("device", function (native) {
         if (native.deviceType !== 'urn:schemas-upnp-org:device:MediaRenderer:1') {
