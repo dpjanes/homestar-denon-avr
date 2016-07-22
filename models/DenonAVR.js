@@ -8,7 +8,7 @@
 
 exports.binding = {
     bridge: require('../DenonAVRBridge').Bridge,
-    model: require('./DenonAvr.json'),
+    model: require('./denon-avr.json'),
     mapping: {
         band: {
             "iot-purpose:band.phono": "PHONO",
