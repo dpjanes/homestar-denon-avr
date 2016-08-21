@@ -10,9 +10,9 @@ try {
     var m = require('../index');
 }
 
-var _ = m.iotdb._;
+const _ = m.iotdb._;
 
-var wrapper = m.wrap("DenonAVR", {
+const wrapper = m.wrap("DenonAVR", {
     mdns: true
 });
 wrapper.on('thing', function (model) {

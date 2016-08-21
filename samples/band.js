@@ -9,6 +9,6 @@
 const iotdb = require('iotdb');
 iotdb.use("homestar-denon-avr");
 
-const things = iot.connect('DenonAVR');
+const things = iotdb.connect('DenonAVR');
 things.set(":volume", 0.18);
-things.set(":band", "DVD");
+things.set(":band", "iot-purpose:band.tv");
