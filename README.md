@@ -1,34 +1,30 @@
 # homestar-denon-avr
 
-Connect and control Denon AVR(s) with HomeStar and IOTDB.
+IOTDB Bridge to connect to and control Denon AVR.
 
 <img src="https://raw.githubusercontent.com/dpjanes/iotdb-homestar/master/docs/HomeStar.png" align="right" />
 
 See <a href="samples/">the samples</a> for details how to add to your project,
 particularly <code>model.js</code> and <code>iotdb.js</code>.
 
-# Installation
-
-Install Home☆Star first. 
-See: https://github.com/dpjanes/iotdb-homestar#installation
-
-Then
-
-    $ homestar install homestar-denon-ave
+Note that the IOTDB dependency is very light, so it's easy to add to any sort of 
+project you're doing.
 
 # Quick Start
 
-Set the TV to channel 3 (see the examples for more! really!)
+Install
 
 	$ npm install -g homestar ## with 'sudo' if error
 	$ homestar setup
 	$ homestar install homestar-denon-avr
-	$ node
-	>>> iotdb = require('iotdb')
-	>>> iot = iotdb.iot()
-	>>> things = iot.connect("DenonAVR")
-	>>> things.set(":volume", 0.5)
-    >>>
+
+Set the TV to channel 3 and volume to half (see the examples for more! really!)
+
+	iotdb = require('iotdb')
+    iotdb.use("homestar-deno-avr")
+	things = iot.connect("DenonAVR")
+    things.set(":channel", "3")
+    things.set(":volume", 0.5)
 
 # Raspberry Pi
 
@@ -36,7 +32,7 @@ If this does not install, make sure to run these commands
 
     sudo apt-get install libavahi-compat-libdnssd-dev avahi-utils
 
-## About
+# About
 
 This bridge will allow you to:
 
