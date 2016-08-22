@@ -1,6 +1,5 @@
 # homestar-denon-avr
-
-IOTDB Bridge to connect to and control Denon AVR.
+[IOTDB](https://github.com/dpjanes/node-iotdb) Bridge connect to and control Denon AVR (Audio Visual Receivers).
 
 <img src="https://raw.githubusercontent.com/dpjanes/iotdb-homestar/master/docs/HomeStar.png" align="right" />
 
