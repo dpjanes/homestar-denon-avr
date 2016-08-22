@@ -3,25 +3,30 @@
 
 <img src="https://raw.githubusercontent.com/dpjanes/iotdb-homestar/master/docs/HomeStar.png" align="right" />
 
-See <a href="samples/">the samples</a> for details how to add to your project,
+# About
+
+See <a href="samples/">the samples</a> for details how to use in your project,
 particularly <code>model.js</code> and <code>iotdb.js</code>.
 
 Note that the IOTDB dependency is very light, so it's easy to add to any sort of 
 project you're doing.
 
-# Quick Start
+# Installation
 
-Install
+* [Read this first](https://github.com/dpjanes/node-iotdb/blob/master/docs/install.md)
 
-	$ npm install -g homestar ## with 'sudo' if error
-	$ homestar setup
-	$ homestar install homestar-denon-avr
+Then:
+
+    $ npm install homestar-denon-avr
+
+# Use
 
 Set the TV to channel 3 and volume to half (see the examples for more! really!)
 
-	iotdb = require('iotdb')
+	const iotdb = require('iotdb')
     iotdb.use("homestar-deno-avr")
-	things = iot.connect("DenonAVR")
+
+	const things = iot.connect("DenonAVR")
     things.set(":channel", "3")
     things.set(":volume", 0.5)
 
