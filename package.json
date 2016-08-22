@@ -7,7 +7,7 @@
         "avahi-mdns-kludge": "~0.0.4", 
         "iotdb": ">=3.0.0"
     }, 
-    "description": "HomeStar / IOTDB Bridge for Denon AVR", 
+    "description": "IOTDB Bridge for Denon AVR", 
     "devDependencies": {
         "grunt": "~1.0.1", 
         "grunt-contrib-jshint": "~1.0.0", 
