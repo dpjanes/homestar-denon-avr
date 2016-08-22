@@ -4,15 +4,12 @@
 
 "use strict";
 
-try {
-    var m = require('homestar-denon-avr');
-} catch (x) {
-    var m = require('../index');
-}
+const iotdb = require("iotdb")
+const _ = iotdb._;
 
-const _ = m.iotdb._;
+const module = require('homestar-denon-avr');
 
-const wrapper = m.wrap("DenonAVR", {
+const wrapper = _.bridge.wrap("DenonAVR", module.bindings, {
     mdns: true
 });
 wrapper.on('thing', function (model) {
