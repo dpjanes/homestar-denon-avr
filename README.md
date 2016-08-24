@@ -11,6 +11,8 @@ particularly <code>model.js</code> and <code>iotdb.js</code>.
 Note that the IOTDB dependency is very light, so it's easy to add to any sort of 
 project you're doing.
 
+* [Read about Bridges](https://github.com/dpjanes/node-iotdb/blob/master/docs/bridges.md)
+
 # Installation
 
 * [Read this first](https://github.com/dpjanes/node-iotdb/blob/master/docs/install.md)
