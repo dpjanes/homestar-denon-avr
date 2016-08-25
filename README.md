@@ -70,7 +70,7 @@ e.g.
 
 Not all Denon AVRs support all these bands. Future
 versions of this bridge will support some sort of
-standardized value like <code>iot-attribute:band.phono</code>, etc..
+standardized value like <code>iot-purpose:band.phono</code>, etc..
 
 * PHONO
 * CD
