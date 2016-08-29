@@ -26,3 +26,5 @@ exports.Bridge = require('./DenonAVRBridge').Bridge;
 exports.bindings = [
     require('./models/DenonAVR').binding,
 ];
+
+exports.module_folder = __dirname;
