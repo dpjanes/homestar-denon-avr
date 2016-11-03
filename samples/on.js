@@ -8,9 +8,9 @@
 const iotdb = require("iotdb");
 const _ = iotdb._;
 
-const ModelBinding = require('../models/DenonAVR');
+const ModelBinding = require('../models/denon-avr');
 
-const wrapper = _.bridge_wrapper(ModelBinding.binding, {
+const wrapper = _.bridge.make(ModelBinding.binding, {
     mdns: true
 });
 wrapper.on('bridge', function (bridge) {

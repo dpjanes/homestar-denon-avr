@@ -30,9 +30,11 @@ echo "=================="
     update-package --increment-version --package "$PACKAGE" --homestar || exit 1
 
     tar cf - \
+        --exclude "xx*" \
+        --exclude "yy*" \
         README.md LICENSE homestar.json package.json \
         DenonAVRBridge.js index.js \
-        models/*.js models/*.json \
+        models/*/*.js models/*/*.json \
         |
     ( cd "${NPM_DST}" && tar xvf - && npm publish ) || exit 1
 

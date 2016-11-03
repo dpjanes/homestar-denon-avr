@@ -7,9 +7,9 @@
 const iotdb = require("iotdb")
 const _ = iotdb._;
 
-const module = require('homestar-denon-avr');
+const homestar_denon_avr = require('homestar-denon-avr');
 
-const wrapper = _.bridge.wrap("DenonAVR", module.bindings, {
+const wrapper = _.bridge.wrap("DenonAVR", homestar_denon_avr.bindings, {
     mdns: true
 });
 wrapper.on('thing', function (model) {

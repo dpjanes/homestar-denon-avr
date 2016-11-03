@@ -72,10 +72,6 @@ var DenonAVRBridge = function (initd, native) {
 
 DenonAVRBridge.prototype = new iotdb.Bridge();
 
-DenonAVRBridge.prototype.name = function () {
-    return "DenonAVRBridge";
-};
-
 /* --- lifecycle --- */
 
 /**
